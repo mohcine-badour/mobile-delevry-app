@@ -1,28 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, TextInput, Image} from 'react-native';
-import { Camera, CameraView } from 'expo-camera';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  TextInput,
+  Image,
+} from "react-native";
+import { Camera, CameraView } from "expo-camera";
+import axios from "axios";
+import { fetchData } from "./services/apiService";
 
 export default function ScanScreen() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
-  const [manualInput, setManualInput] = useState('');
+  const [manualInput, setManualInput] = useState("");
+  const [apiData, setApiData] = useState(null);
 
   useEffect(() => {
     const getScannerPermissions = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+      setHasPermission(status === "granted");
     };
 
     getScannerPermissions();
   }, []);
 
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await fetchData();
+        setApiData(data);
+      } catch (error) {
+        Alert.alert("Error", "Failed to fetch data from API");
+      }
+    };
+    getData();
+  }, []);
+
   const handleBarCodeScanned = ({ data }: { type: string; data: string }) => {
-    console.log(data)
+    console.log(data);
   };
 
   // const handleManualSubmit = () => {
   //   if (manualInput.trim()) {
-      
+
   //   } else {
   //     Alert.alert('Error', 'Please enter a value');
   //   }
@@ -31,9 +54,7 @@ export default function ScanScreen() {
   if (hasPermission === null) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={styles.statusText}>
-          Requesting camera permission...
-        </Text>
+        <Text style={styles.statusText}>Requesting camera permission...</Text>
       </View>
     );
   }
@@ -41,9 +62,7 @@ export default function ScanScreen() {
   if (hasPermission === false) {
     return (
       <View style={styles.centerContainer}>
-        <Text style={styles.errorText}>
-          No access to camera
-        </Text>
+        <Text style={styles.errorText}>No access to camera</Text>
       </View>
     );
   }
@@ -51,8 +70,8 @@ export default function ScanScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Image 
-          source={require('../assets/images/logo.png')}
+        <Image
+          source={require("../assets/images/logo.png")}
           style={styles.logo}
           resizeMode="contain"
         />
@@ -68,14 +87,12 @@ export default function ScanScreen() {
               style={styles.scanAgainButton}
               onPress={() => setScanned(false)}
             >
-              <Text style={styles.scanAgainText}>
-                Tap to Scan Again
-              </Text>
+              <Text style={styles.scanAgainText}>Tap to Scan Again</Text>
             </TouchableOpacity>
           )}
         </View>
       </CameraView>
-      
+
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -101,11 +118,11 @@ const styles = StyleSheet.create({
   },
   topBar: {
     height: 60,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: "#eee",
   },
   logo: {
     width: 100,
@@ -116,69 +133,69 @@ const styles = StyleSheet.create({
   },
   centerContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   statusText: {
     fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
   },
   errorText: {
     fontSize: 16,
-    color: '#FF3B30',
-    textAlign: 'center',
+    color: "#FF3B30",
+    textAlign: "center",
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   scanFrame: {
     width: 250,
     height: 250,
     borderWidth: 2,
-    borderColor: 'white',
-    backgroundColor: 'transparent',
+    borderColor: "white",
+    backgroundColor: "transparent",
   },
   scanAgainButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 32,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: "rgba(255,255,255,0.9)",
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
   },
   scanAgainText: {
-    color: '#007AFF',
+    color: "#007AFF",
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   inputContainer: {
     padding: 16,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: "#eee",
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
     marginBottom: 12,
   },
   submitButton: {
-    backgroundColor: '#048DFF',
+    backgroundColor: "#048DFF",
     paddingVertical: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   submitButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });
