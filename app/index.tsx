@@ -12,14 +12,6 @@ import { Camera, CameraView } from "expo-camera";
 import ScanInfos from "./scaninfos";
 import { fetchData } from "./services/apiService";
 
-interface Orders {
-  id: string;
-  Address: string;
-  customerName: string;
-  customerTel: string;
-  status: string;
-}
-
 export default function ScanScreen() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
@@ -32,39 +24,29 @@ export default function ScanScreen() {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
     };
-
     getScannerPermissions();
   }, []);
 
   useEffect(() => {
     const retrieveData = async () => {
       try {
-        const data = await fetchData("/orders"); // Remplace par le chemin dont tu as besoin
+        const data = await fetchData("/orders");
         setApiData(data);
       } catch (error) {
         Alert.alert("Error", "Failed to fetch data from API");
       }
     };
     retrieveData();
-
-    // const getData = async () => {
-    //   try {
-    //     const data = await fetchData();
-    //     setApiData(data);
-    //   } catch (error) {
-    //     Alert.alert("Error", "Failed to fetch data from API");
-    //   }
-    // };
-    // getData();
   }, []);
 
   const handleBarCodeScanned = ({ data }: { type: string; data: any }) => {
-    const matchedItem = apiData.find((item: any) => item.ID === data);
+    const matchedItem = Object.values(apiData).find(
+      (item: any) => item.ID === data
+    );
     if (matchedItem) {
-      console.log("Match found:", matchedItem);
       setScannedData(matchedItem);
     } else {
-      console.log("No match found");
+      Alert.alert("Error", "Aucune correspondance trouvée pour cet ID.");
     }
     setScanned(true);
   };
@@ -76,9 +58,10 @@ export default function ScanScreen() {
 
   const handleManualSubmit = () => {
     if (manualInput.trim()) {
-      const matchedItem = apiData.find((item: any) => item.ID === manualInput);
+      const matchedItem = Object.values(apiData).find(
+        (item: any) => item.ID === manualInput
+      );
       if (matchedItem) {
-        console.log("Match found:", matchedItem);
         setScannedData(matchedItem);
       } else {
         console.log("No match found");

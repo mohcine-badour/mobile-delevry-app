@@ -14,7 +14,6 @@ interface ScanIfosProps {
 
 export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen
-  // let parsedData = null;
 
   useEffect(() => {
     // Slide up when the component mounts
@@ -27,16 +26,16 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
 
   // Slide down and call onClose when done
   const handleValidate = () => {
-    if (data.status === "pending") {
+    if (data.status === "rejected") {
       const updatedData = { ...data, status: "shipped" };
       console.log("updatedData", updatedData);
-      // set(ref(database, `orders/${data.ID}`), updatedData)
-      //   .then(() => {
-      //     console.log("Status updated to 'shipped' successfully!");
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error saving data:", error);
-      //   });
+      set(ref(database, `orders/${data.ID}`), updatedData)
+        .then(() => {
+          console.log("Status updated to 'shipped' successfully!");
+        })
+        .catch((error) => {
+          console.error("Error saving data:", error);
+        });
     }
 
     Animated.timing(slideAnim, {
