@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, TextInput, Image} from 'react-native';
 import { Camera, CameraView } from 'expo-camera';
+import ScanInfos from './scaninfos';
 
 export default function ScanScreen() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [manualInput, setManualInput] = useState('');
+  const [scannedData, setScannedData] = useState<string | null>(null);
 
   useEffect(() => {
     const getScannerPermissions = async () => {
@@ -17,7 +19,13 @@ export default function ScanScreen() {
   }, []);
 
   const handleBarCodeScanned = ({ data }: { type: string; data: string }) => {
-    console.log(data)
+    setScanned(true);
+    setScannedData(data);
+  };
+  
+  const closeScanResult = () => {
+    setScannedData(null); // Clear data
+    setScanned(false); // Allow scanning again
   };
 
   // const handleManualSubmit = () => {
@@ -63,7 +71,7 @@ export default function ScanScreen() {
       >
         <View style={styles.overlay}>
           <View style={styles.scanFrame} />
-          {scanned && (
+          {/* {scanned && (
             <TouchableOpacity
               style={styles.scanAgainButton}
               onPress={() => setScanned(false)}
@@ -72,7 +80,7 @@ export default function ScanScreen() {
                 Tap to Scan Again
               </Text>
             </TouchableOpacity>
-          )}
+          )} */}
         </View>
       </CameraView>
       
@@ -91,6 +99,9 @@ export default function ScanScreen() {
           <Text style={styles.submitButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
+      {scannedData && (
+        <ScanInfos data={scannedData} onClose={closeScanResult} />
+      )}
     </View>
   );
 }
