@@ -37,15 +37,25 @@ export default function ScanScreen() {
   }, []);
 
   useEffect(() => {
-    const getData = async () => {
+    const retrieveData = async () => {
       try {
-        const data = await fetchData();
+        const data = await fetchData("/orders"); // Remplace par le chemin dont tu as besoin
         setApiData(data);
       } catch (error) {
         Alert.alert("Error", "Failed to fetch data from API");
       }
     };
-    getData();
+    retrieveData();
+
+    // const getData = async () => {
+    //   try {
+    //     const data = await fetchData();
+    //     setApiData(data);
+    //   } catch (error) {
+    //     Alert.alert("Error", "Failed to fetch data from API");
+    //   }
+    // };
+    // getData();
   }, []);
 
   const handleBarCodeScanned = ({ data }: { type: string; data: any }) => {

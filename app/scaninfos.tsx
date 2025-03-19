@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Animated,
 } from "react-native";
-
+import { database, ref, set } from "./configs/firebaseConfig";
 interface ScanIfosProps {
   data: any; // The scanned data to display
   onClose: () => void; // Function to close the sheet
@@ -14,7 +14,7 @@ interface ScanIfosProps {
 
 export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen
-  let parsedData = null;
+  // let parsedData = null;
 
   useEffect(() => {
     // Slide up when the component mounts
@@ -27,14 +27,53 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
 
   // Slide down and call onClose when done
   const handleValidate = () => {
+    if (data.status === "pending") {
+      const updatedData = { ...data, status: "shipped" };
+      console.log("updatedData", updatedData);
+      // set(ref(database, `orders/${data.ID}`), updatedData)
+      //   .then(() => {
+      //     console.log("Status updated to 'shipped' successfully!");
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error saving data:", error);
+      //   });
+    }
+
     Animated.timing(slideAnim, {
       toValue: 300,
       duration: 300,
       useNativeDriver: true,
     }).start(() => onClose());
+
+    // const saveData = () => {
+    //   set(ref(database, `orders/${data.ID}`), {
+    //     Address: data.Address,
+    //     customerName: data.customerName,
+    //     status: data.status,
+    //     customerTel: data.customerTel,
+    //     delivery_person_name: data.delivery_person_name,
+    //     delivery_person_tel: data.delivery_person_tel,
+    //   })
+    //     .then(() => console.log("Data saved successfully!"))
+    //     .catch((error) => console.error("Error saving data:", error));
+    // };
+
+    // saveData();
   };
 
   const handleReject = () => {
+    if (data.status === "pending") {
+      const updatedData = { ...data, status: "rejected" };
+      console.log("updatedData", updatedData);
+      // set(ref(database, `orders/${data.ID}`), updatedData)
+      //   .then(() => {
+      //     console.log("Status updated to 'rejected' successfully!");
+      //   })
+      //   .catch((error) => {
+      //     console.error("Error saving data:", error);
+      //   });
+    }
+
     Animated.timing(slideAnim, {
       toValue: 300,
       duration: 300,
@@ -52,7 +91,7 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
       ) : (
         <View style={styles.dataContainer}>
           <View style={styles.header}>
-            <Text style={styles.bottomSheetTitle}>{data.QR_code}</Text>
+            <Text style={styles.bottomSheetTitle}>{data.ID}</Text>
           </View>
           <View style={styles.dataRow}>
             <Text style={styles.label}>Address</Text>
@@ -81,6 +120,27 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
           </View>
         </View>
       )}
+      {/* {data.status === "pending" ? (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.validateButton}
+            onPress={handleValidate}
+          >
+            <Text style={styles.buttonText}>Validate</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
+            <Text style={styles.buttonText}>Reject</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.validateButton} onPress={onClose}>
+            <Text style={styles.buttonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      )} */}
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.validateButton}
@@ -88,6 +148,7 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
         >
           <Text style={styles.buttonText}>Validate</Text>
         </TouchableOpacity>
+
         <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
           <Text style={styles.buttonText}>Reject</Text>
         </TouchableOpacity>
