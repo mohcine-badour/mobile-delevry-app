@@ -8,6 +8,7 @@ interface ScanIfosProps {
 
 export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen
+  let parsedData = null;
 
   useEffect(() => {
     // Slide up when the component mounts
@@ -18,21 +19,21 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
     }).start();
   }, [slideAnim]);
 
-  let parsedData = {
-    "ID": "MKG2669BX4",
-    "Address": "65 Avenue des FAR, Rabat",
-    "customerName": "Omar Belhaj",
-    "customerTel": "+212 6 1269 5011",
-    "delivery_person_name": "Ahmed El Amrani",
-    "delivery_person_tel": "+212 6 1262 2011",
-    "status": "pending",
-    "QR_code": "IIXIMQT8BOFMZ1I"
-  }
-  // try {
-  //   parsedData = JSON.parse(data);
-  // } catch (error) {
-  //   parsedData = { error: 'Invalid data format' };
+  // let parsedData = {
+  //   "ID": "MKG2669BX4",
+  //   "Address": "65 Avenue des FAR, Rabat",
+  //   "customerName": "Omar Belhaj",
+  //   "customerTel": "+212 6 1269 5011",
+  //   "delivery_person_name": "Ahmed El Amrani",
+  //   "delivery_person_tel": "+212 6 1262 2011",
+  //   "status": "pending",
+  //   "QR_code": "IIXIMQT8BOFMZ1I"
   // }
+  try {
+    parsedData = JSON.parse(data);
+  } catch (error) {
+    parsedData = { error: 'Invalid data format' };
+  }
 
 // Slide down and call onClose when done
   const handleValidate = () => {
