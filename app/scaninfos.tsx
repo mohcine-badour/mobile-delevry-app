@@ -7,6 +7,7 @@ import {
   Animated,
 } from "react-native";
 import { database, ref, set } from "./configs/firebaseConfig";
+import Toast from "react-native-toast-message";
 interface ScanIfosProps {
   data: any; // The scanned data to display
   onClose: () => void; // Function to close the sheet
@@ -14,6 +15,14 @@ interface ScanIfosProps {
 
 export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen
+
+  const showToast = () => {
+    Toast.show({
+      type: "success", // 'success', 'error', 'info'
+      text1: "Hello",
+      text2: "This is a success message!",
+    });
+  };
 
   useEffect(() => {
     // Slide up when the component mounts
@@ -26,9 +35,11 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
 
   // Slide down and call onClose when done
   const handleValidate = () => {
+    showToast();
     if (data.status === "rejected") {
       const updatedData = { ...data, status: "shipped" };
       console.log("updatedData", updatedData);
+
       set(ref(database, `orders/${data.ID}`), updatedData)
         .then(() => {
           console.log("Status updated to 'shipped' successfully!");
@@ -43,34 +54,19 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
       duration: 300,
       useNativeDriver: true,
     }).start(() => onClose());
-
-    // const saveData = () => {
-    //   set(ref(database, `orders/${data.ID}`), {
-    //     Address: data.Address,
-    //     customerName: data.customerName,
-    //     status: data.status,
-    //     customerTel: data.customerTel,
-    //     delivery_person_name: data.delivery_person_name,
-    //     delivery_person_tel: data.delivery_person_tel,
-    //   })
-    //     .then(() => console.log("Data saved successfully!"))
-    //     .catch((error) => console.error("Error saving data:", error));
-    // };
-
-    // saveData();
   };
 
   const handleReject = () => {
     if (data.status === "pending") {
       const updatedData = { ...data, status: "rejected" };
       console.log("updatedData", updatedData);
-      // set(ref(database, `orders/${data.ID}`), updatedData)
-      //   .then(() => {
-      //     console.log("Status updated to 'rejected' successfully!");
-      //   })
-      //   .catch((error) => {
-      //     console.error("Error saving data:", error);
-      //   });
+      set(ref(database, `orders/${data.ID}`), updatedData)
+        .then(() => {
+          console.log("Status updated to 'rejected' successfully!");
+        })
+        .catch((error) => {
+          console.error("Error saving data:", error);
+        });
     }
 
     Animated.timing(slideAnim, {
@@ -119,27 +115,6 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
           </View>
         </View>
       )}
-      {/* {data.status === "pending" ? (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.validateButton}
-            onPress={handleValidate}
-          >
-            <Text style={styles.buttonText}>Validate</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
-            <Text style={styles.buttonText}>Reject</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.validateButton} onPress={onClose}>
-            <Text style={styles.buttonText}>Close</Text>
-          </TouchableOpacity>
-        </View>
-      )} */}
-
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={styles.validateButton}
