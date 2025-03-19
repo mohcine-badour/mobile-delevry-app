@@ -1,5 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
+import React, { useEffect, useRef } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Animated,
+} from "react-native";
 
 interface ScanIfosProps {
   data: string; // The scanned data to display
@@ -19,6 +25,10 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
     }).start();
   }, [slideAnim]);
 
+  useEffect(() => {
+    console.log("datat", data);
+  });
+
   // let parsedData = {
   //   "ID": "MKG2669BX4",
   //   "Address": "65 Avenue des FAR, Rabat",
@@ -32,10 +42,10 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   try {
     parsedData = JSON.parse(data);
   } catch (error) {
-    parsedData = { error: 'Invalid data format' };
+    parsedData = { error: "Invalid data format" };
   }
 
-// Slide down and call onClose when done
+  // Slide down and call onClose when done
   const handleValidate = () => {
     Animated.timing(slideAnim, {
       toValue: 300,
@@ -54,10 +64,7 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
 
   return (
     <Animated.View
-      style={[
-        styles.bottomSheet,
-        { transform: [{ translateY: slideAnim }] },
-      ]}
+      style={[styles.bottomSheet, { transform: [{ translateY: slideAnim }] }]}
     >
       {/* Content */}
       {parsedData.error ? (
@@ -84,7 +91,9 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
             <Text
               style={[
                 styles.value,
-                parsedData.status === 'pending' ? styles.statusPending : styles.statusOther,
+                parsedData.status === "pending"
+                  ? styles.statusPending
+                  : styles.statusOther,
               ]}
             >
               {parsedData.status}
@@ -93,7 +102,10 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
         </View>
       )}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.validateButton} onPress={handleValidate}>
+        <TouchableOpacity
+          style={styles.validateButton}
+          onPress={handleValidate}
+        >
           <Text style={styles.buttonText}>Validate</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
@@ -105,104 +117,104 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
 }
 const styles = StyleSheet.create({
   bottomSheet: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
     height: 380, // dependece for content
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
   },
   header: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingBottom: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: "#eee",
   },
   bottomSheetTitle: {
     fontSize: 22,
-    fontWeight: '700',
-    color: '#333',
+    fontWeight: "700",
+    color: "#333",
   },
   dataContainer: {
     paddingVertical: 15,
   },
   dataRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: "#f0f0f0",
   },
   label: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#666',
+    fontWeight: "600",
+    color: "#666",
     flex: 1,
   },
   value: {
     fontSize: 16,
-    fontWeight: '400',
-    color: '#333',
+    fontWeight: "400",
+    color: "#333",
     flex: 2,
-    textAlign: 'right',
+    textAlign: "right",
   },
   statusPending: {
-    color: '#FFA500', // Orange for pending
-    fontWeight: '600',
+    color: "#FFA500", // Orange for pending
+    fontWeight: "600",
   },
   statusOther: {
-    color: '#333',
+    color: "#333",
   },
   errorText: {
     fontSize: 16,
-    color: '#DC3545', // Red for error
-    textAlign: 'center',
+    color: "#DC3545", // Red for error
+    textAlign: "center",
     paddingVertical: 20,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
   },
   validateButton: {
-    backgroundColor: '#048DFF',
+    backgroundColor: "#048DFF",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
     flex: 1,
     marginRight: 10,
-    alignItems: 'center',
-    shadowColor: '#048DFF',
+    alignItems: "center",
+    shadowColor: "#048DFF",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 3,
   },
   rejectButton: {
-    backgroundColor: '#DC3545',
+    backgroundColor: "#DC3545",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 10,
     flex: 1,
     marginRight: 10,
-    alignItems: 'center',
-    shadowColor: '#048DFF',
+    alignItems: "center",
+    shadowColor: "#048DFF",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 3,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
