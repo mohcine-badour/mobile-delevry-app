@@ -8,7 +8,7 @@ import {
 } from "react-native";
 
 interface ScanIfosProps {
-  data: string; // The scanned data to display
+  data: any; // The scanned data to display
   onClose: () => void; // Function to close the sheet
 }
 
@@ -24,26 +24,6 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
       useNativeDriver: true,
     }).start();
   }, [slideAnim]);
-
-  useEffect(() => {
-    console.log("datat", data);
-  });
-
-  // let parsedData = {
-  //   "ID": "MKG2669BX4",
-  //   "Address": "65 Avenue des FAR, Rabat",
-  //   "customerName": "Omar Belhaj",
-  //   "customerTel": "+212 6 1269 5011",
-  //   "delivery_person_name": "Ahmed El Amrani",
-  //   "delivery_person_tel": "+212 6 1262 2011",
-  //   "status": "pending",
-  //   "QR_code": "IIXIMQT8BOFMZ1I"
-  // }
-  try {
-    parsedData = JSON.parse(data);
-  } catch (error) {
-    parsedData = { error: "Invalid data format" };
-  }
 
   // Slide down and call onClose when done
   const handleValidate = () => {
@@ -67,36 +47,36 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
       style={[styles.bottomSheet, { transform: [{ translateY: slideAnim }] }]}
     >
       {/* Content */}
-      {parsedData.error ? (
-        <Text style={styles.errorText}>{parsedData.error}</Text>
+      {data.error ? (
+        <Text style={styles.errorText}>{data.error}</Text>
       ) : (
         <View style={styles.dataContainer}>
           <View style={styles.header}>
-            <Text style={styles.bottomSheetTitle}>{parsedData.QR_code}</Text>
+            <Text style={styles.bottomSheetTitle}>{data.QR_code}</Text>
           </View>
           <View style={styles.dataRow}>
             <Text style={styles.label}>Address</Text>
-            <Text style={styles.value}>{parsedData.Address}</Text>
+            <Text style={styles.value}>{data.Address}</Text>
           </View>
           <View style={styles.dataRow}>
             <Text style={styles.label}>Customer Name</Text>
-            <Text style={styles.value}>{parsedData.customerName}</Text>
+            <Text style={styles.value}>{data.customerName}</Text>
           </View>
           <View style={styles.dataRow}>
             <Text style={styles.label}>Customer Tel</Text>
-            <Text style={styles.value}>{parsedData.customerTel}</Text>
+            <Text style={styles.value}>{data.customerTel}</Text>
           </View>
           <View style={styles.dataRow}>
             <Text style={styles.label}>Status</Text>
             <Text
               style={[
                 styles.value,
-                parsedData.status === "pending"
+                data.status === "pending"
                   ? styles.statusPending
                   : styles.statusOther,
               ]}
             >
-              {parsedData.status}
+              {data.status}
             </Text>
           </View>
         </View>
