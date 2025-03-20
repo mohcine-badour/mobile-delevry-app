@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -15,14 +15,9 @@ interface ScanIfosProps {
 
 export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen
-
-  const showToast = () => {
-    Toast.show({
-      type: "success", // 'success', 'error', 'info'
-      text1: "Hello",
-      text2: "This is a success message!",
-    });
-  };
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [isPanding, setIsPanding] = useState(false);
+  const [isValidating, setIsValidating] = useState(false);
 
   useEffect(() => {
     // Slide up when the component mounts
@@ -35,25 +30,54 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
 
   // Slide down and call onClose when done
   const handleValidate = () => {
-    showToast();
     if (data.status === "rejected") {
-      const updatedData = { ...data, status: "shipped" };
-      console.log("updatedData", updatedData);
+      setIsValidating(true);
 
-      set(ref(database, `orders/${data.ID}`), updatedData)
-        .then(() => {
-          console.log("Status updated to 'shipped' successfully!");
-        })
-        .catch((error) => {
-          console.error("Error saving data:", error);
-        });
+      // Fade in the "Validated!" message
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        const updatedData = { ...data, status: "shipped" };
+        set(ref(database, `orders/${data.ID}`), updatedData)
+          .then(() => {
+            console.log("Status updated to 'shipped' successfully!");
+            // After validation, fade out and slide down
+            Animated.sequence([
+              Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: true,
+              }),
+              Animated.timing(slideAnim, {
+                toValue: 300,
+                duration: 300,
+                useNativeDriver: true,
+              }),
+            ]).start(() => {
+              setIsValidating(false);
+              onClose();
+            });
+          })
+          .catch((error) => {
+            console.error("Error saving data:", error);
+            setIsValidating(false);
+            Animated.timing(fadeAnim, {
+              toValue: 0,
+              duration: 300,
+              useNativeDriver: true,
+            }).start();
+          });
+      });
+    } else {
+      // If no validation needed, just slide down
+      Animated.timing(slideAnim, {
+        toValue: 300,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => onClose());
     }
-
-    Animated.timing(slideAnim, {
-      toValue: 300,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => onClose());
   };
 
   const handleReject = () => {
@@ -80,8 +104,11 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
     <Animated.View
       style={[styles.bottomSheet, { transform: [{ translateY: slideAnim }] }]}
     >
-      {/* Content */}
-      {data.error ? (
+      {isValidating ? (
+        <Animated.View style={[styles.validationContainer, { opacity: fadeAnim }]}>
+          <Text style={styles.validationText}>Validated!</Text>
+        </Animated.View>
+      ) : data.error ? (
         <Text style={styles.errorText}>{data.error}</Text>
       ) : (
         <View style={styles.dataContainer}>
@@ -115,18 +142,33 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
           </View>
         </View>
       )}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={styles.validateButton}
-          onPress={handleValidate}
-        >
-          <Text style={styles.buttonText}>Validate</Text>
-        </TouchableOpacity>
+      {!isValidating && (
+        <>
+          {
+            !isPanding ?  // <--- need to be changed
+              (
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  style={styles.validateButton}
+                  onPress={handleValidate}
+                >
+                  <Text style={styles.buttonText}>Validate</Text>
+                </TouchableOpacity>
 
-        <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
-          <Text style={styles.buttonText}>Reject</Text>
-        </TouchableOpacity>
-      </View>
+                <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
+                  <Text style={styles.buttonText}>Reject</Text>
+                </TouchableOpacity>
+              </View>
+              ) : (
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.validateButton} onPress={onClose}>
+                  <Text style={styles.buttonText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+              )
+          }
+        </>
+        )}
     </Animated.View>
   );
 }
@@ -146,6 +188,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 10,
+  },
+  validationContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  validationText: {
+    fontSize: 24,
+    fontWeight: "700",
+    color: "#048DFF",
   },
   header: {
     alignItems: "center",
