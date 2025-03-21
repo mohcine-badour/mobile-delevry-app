@@ -39,7 +39,7 @@ export default function ScanScreen() {
       }
     };
     retrieveData();
-  }, []);
+  }, [scanned]);
 
   const handleBarCodeScanned = ({ data }: { type: string; data: any }) => {
     const matchedItem = Object.values(apiData).find((item: any) => {
@@ -52,7 +52,6 @@ export default function ScanScreen() {
     }
     setScanned(true);
   };
-  
 
   const closeScanResult = () => {
     setScannedData(null); // Clear data

@@ -1,6 +1,6 @@
 // firebaseConfig.js
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set, get, update, remove } from "firebase/database";
+import { getDatabase, ref, set, get, update, remove , onValue} from "firebase/database";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -17,4 +17,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-export { database, ref, set, get, update, remove };
+export { database, ref, set, get, update, remove, onValue };
