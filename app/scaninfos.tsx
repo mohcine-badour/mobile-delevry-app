@@ -7,16 +7,16 @@ import {
   Animated,
 } from "react-native";
 import { database, ref, set } from "./configs/firebaseConfig";
-import Toast from "react-native-toast-message";
+import { ShippingStatus } from "./enum/shippingStatus";
 interface ScanIfosProps {
-  data: any; // The scanned data to display
-  onClose: () => void; // Function to close the sheet
+  data: any;
+  onClose: () => void;
 }
 
 export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const [isPanding, setIsPanding] = useState(data.status === 'pending');
+  const [isPanding, setIsPanding] = useState(data.status === ShippingStatus.Pending);
   const [isValidating, setIsValidating] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
 
   // Slide down and call onClose when done
   const handleValidate = () => {
-    if (data.status === "rejected" || data.status === "pending") {
+    if (data.status === ShippingStatus.Rejected || data.status === ShippingStatus.Pending) {
       setIsValidating(true);
 
       // Fade in the "Validated!" message
@@ -39,11 +39,10 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
         duration: 500,
         useNativeDriver: true,
       }).start(() => {
-        const updatedData = { ...data, status: "shipped" };
+        const updatedData = { ...data, status: ShippingStatus.Shipped };
         set(ref(database, `orders/${data.ID}`), updatedData)
           .then(() => {
-            console.log("Status updated to 'shipped' successfully!");
-            // After validation, fade out and slide down
+           // After validation, fade out and slide down
             Animated.sequence([
               Animated.timing(fadeAnim, {
                 toValue: 0,
@@ -81,8 +80,8 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   };
 
   const handleReject = () => {
-    if (data.status === "pending") {
-      const updatedData = { ...data, status: "rejected" };
+    if (data.status === ShippingStatus.Pending) {
+      const updatedData = { ...data, status: ShippingStatus.Rejected };
       console.log("updatedData", updatedData);
       set(ref(database, `orders/${data.ID}`), updatedData)
         .then(() => {
@@ -134,11 +133,11 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
             <Text
               style={[
                 styles.value,
-                data.status === "pending"
+                data.status === ShippingStatus.Pending
                   ? styles.statusPending
-                  : data.status === "shipped"
+                  : data.status === ShippingStatus.Shipped
                   ? styles.statusShipped
-                  : data.status === "rejected"
+                  : data.status === ShippingStatus.Rejected
                   ? styles.statusRejected
                   : styles.statusOther,
               ]}
