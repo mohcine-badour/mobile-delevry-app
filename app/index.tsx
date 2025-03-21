@@ -11,6 +11,7 @@ import {
 import { Camera, CameraView } from "expo-camera";
 import ScanInfos from "./scaninfos";
 import { fetchData } from "./services/apiService";
+import { useNavigation } from "expo-router";
 
 export default function ScanScreen() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -18,6 +19,7 @@ export default function ScanScreen() {
   const [manualInput, setManualInput] = useState("");
   const [scannedData, setScannedData] = useState<string | null>(null);
   const [apiData, setApiData] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const getScannerPermissions = async () => {
@@ -40,9 +42,9 @@ export default function ScanScreen() {
   }, []);
 
   const handleBarCodeScanned = ({ data }: { type: string; data: any }) => {
-    const matchedItem = Object.values(apiData).find(
-      (item: any) => item.ID === data
-    );
+    const matchedItem = Object.values(apiData).find((item: any) => {
+      return item.ID === data; // Ensure the comparison returns a boolean value
+    });
     if (matchedItem) {
       setScannedData(matchedItem);
     } else {
@@ -50,6 +52,7 @@ export default function ScanScreen() {
     }
     setScanned(true);
   };
+  
 
   const closeScanResult = () => {
     setScannedData(null); // Clear data
@@ -95,6 +98,15 @@ export default function ScanScreen() {
           style={styles.logo}
           resizeMode="contain"
         />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("historique" as never)}
+        >
+          <Image
+            source={require("../assets/images/archiver.png")}
+            style={styles.buttonImage}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
       <CameraView
         style={styles.camera}
@@ -144,14 +156,20 @@ const styles = StyleSheet.create({
   topBar: {
     height: 60,
     backgroundColor: "#fff",
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
   },
   logo: {
     width: 100,
     height: 40,
+  },
+  buttonImage: {
+    width: 24,
+    height: 24,
   },
   camera: {
     flex: 1,
@@ -184,19 +202,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "white",
     backgroundColor: "transparent",
-  },
-  scanAgainButton: {
-    position: "absolute",
-    bottom: 32,
-    backgroundColor: "rgba(255,255,255,0.9)",
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  scanAgainText: {
-    color: "#007AFF",
-    fontSize: 16,
-    fontWeight: "500",
   },
   inputContainer: {
     padding: 16,

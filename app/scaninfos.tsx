@@ -16,7 +16,7 @@ interface ScanIfosProps {
 export default function ScanIfos({ data, onClose }: ScanIfosProps) {
   const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const [isPanding, setIsPanding] = useState(false);
+  const [isPanding, setIsPanding] = useState(data.status === 'pending');
   const [isValidating, setIsValidating] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
 
   // Slide down and call onClose when done
   const handleValidate = () => {
-    if (data.status === "rejected") {
+    if (data.status === "rejected" || data.status === "pending") {
       setIsValidating(true);
 
       // Fade in the "Validated!" message
@@ -105,7 +105,9 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
       style={[styles.bottomSheet, { transform: [{ translateY: slideAnim }] }]}
     >
       {isValidating ? (
-        <Animated.View style={[styles.validationContainer, { opacity: fadeAnim }]}>
+        <Animated.View
+          style={[styles.validationContainer, { opacity: fadeAnim }]}
+        >
           <Text style={styles.validationText}>Validated!</Text>
         </Animated.View>
       ) : data.error ? (
@@ -120,11 +122,11 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
             <Text style={styles.value}>{data.Address}</Text>
           </View>
           <View style={styles.dataRow}>
-            <Text style={styles.label}>Customer Name</Text>
+            <Text style={styles.label}>Full Name</Text>
             <Text style={styles.value}>{data.customerName}</Text>
           </View>
           <View style={styles.dataRow}>
-            <Text style={styles.label}>Customer Tel</Text>
+            <Text style={styles.label}>Phone</Text>
             <Text style={styles.value}>{data.customerTel}</Text>
           </View>
           <View style={styles.dataRow}>
@@ -134,6 +136,10 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
                 styles.value,
                 data.status === "pending"
                   ? styles.statusPending
+                  : data.status === "shipped"
+                  ? styles.statusShipped
+                  : data.status === "rejected"
+                  ? styles.statusRejected
                   : styles.statusOther,
               ]}
             >
@@ -144,31 +150,31 @@ export default function ScanIfos({ data, onClose }: ScanIfosProps) {
       )}
       {!isValidating && (
         <>
-          {
-            !isPanding ?  // <--- need to be changed
-              (
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  style={styles.validateButton}
-                  onPress={handleValidate}
-                >
-                  <Text style={styles.buttonText}>Validate</Text>
-                </TouchableOpacity>
+          {isPanding ? (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.validateButton}
+                onPress={handleValidate}
+              >
+                <Text style={styles.buttonText}>Validate</Text>
+              </TouchableOpacity>
 
-                <TouchableOpacity style={styles.rejectButton} onPress={handleReject}>
-                  <Text style={styles.buttonText}>Reject</Text>
-                </TouchableOpacity>
-              </View>
-              ) : (
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.validateButton} onPress={onClose}>
-                  <Text style={styles.buttonText}>Close</Text>
-                </TouchableOpacity>
-              </View>
-              )
-          }
+              <TouchableOpacity
+                style={styles.rejectButton}
+                onPress={handleReject}
+              >
+                <Text style={styles.buttonText}>Reject</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.validateButton} onPress={onClose}>
+                <Text style={styles.buttonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </>
-        )}
+      )}
     </Animated.View>
   );
 }
@@ -234,7 +240,15 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   statusPending: {
-    color: "#FFA500", // Orange for pending
+    color: "#FFA500", 
+    fontWeight: "600",
+  },
+  statusShipped: {
+    color: "#28a745", 
+    fontWeight: "600",
+  },
+  statusRejected: {
+    color: "#dc3545", 
     fontWeight: "600",
   },
   statusOther: {

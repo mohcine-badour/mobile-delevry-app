@@ -1,0 +1,202 @@
+{
+    "orders": {
+        "MKG2669BX4": {
+            "ID": "MKG2669BX4",
+            "Address": "65 Avenue des FAR, Rabat",
+            "customerName": "Omar Belhaj",
+            "customerTel": "+212 6 1269 5011",
+            "delivery_person_name": "Ahmed El Amrani",
+            "delivery_person_tel": "+212 6 1262 2011",
+            "status": "pending"
+        },
+        "U8P4D6Z6TD": {
+            "ID": "U8P4D6Z6TD",
+            "Address": "32 Avenue Mohammed V, Rabat",
+            "customerName": "Meryem Fassi",
+            "customerTel": "+212 6 1269 3011",
+            "delivery_person_name": "Fatima Zahra Benali",
+            "delivery_person_tel": "+212 6 1265 2011",
+            "status": "rejected"
+        },
+        "C2GM9F9YYR": {
+            "ID": "C2GM9F9YYR",
+            "Address": "68 Boulevard Hassan II, Marrakech",
+            "customerName": "Said El Makhfi",
+            "customerTel": "+212 6 1265 7011",
+            "delivery_person_name": "Youssef Bensaid",
+            "delivery_person_tel": "+212 6 1263 2011",
+            "status": "rejected"
+        },
+        "4GV8ZVOR2V": {
+            "ID": "4GV8ZVOR2V",
+            "Address": "15 Rue Ibn Sina, Tanger",
+            "customerName": "Rachida Ziani",
+            "customerTel": "+212 6 1261 5011",
+            "delivery_person_name": "Khalid El Idrissi",
+            "delivery_person_tel": "+212 6 1265 9011",
+            "status": "shipped"
+        },
+        "RI5NAGEITN": {
+            "ID": "RI5NAGEITN",
+            "Address": "77 Boulevard Hassan II, Casablanca",
+            "customerName": "Nabil Amrani",
+            "customerTel": "+212 6 1269 8011",
+            "delivery_person_name": "Amina Lahlou",
+            "delivery_person_tel": "+212 6 1265 0011",
+            "status": "shipped"
+        },
+        "62M5MRWRIA": {
+            "ID": "62M5MRWRIA",
+            "Address": "54 Boulevard Hassan II, Marrakech",
+            "customerName": "Khadija Chafik",
+            "customerTel": "+212 6 1265 4011",
+            "delivery_person_name": "Mohamed Rami",
+            "delivery_person_tel": "+212 6 1260 1011",
+            "status": "rejected"
+        },
+        "UOUWZX0RJO": {
+            "ID": "UOUWZX0RJO",
+            "Address": "87 Rue Abdelmoumen, Meknès",
+            "customerName": "Mouad Berrada",
+            "customerTel": "+212 6 1268 0011",
+            "delivery_person_name": "Samira Chouaib",
+            "delivery_person_tel": "+212 6 1260 5011",
+            "status": "rejected"
+        },
+        "4NNQOS6JPH": {
+            "ID": "4NNQOS6JPH",
+            "Address": "34 Avenue des FAR, Agadir",
+            "customerName": "Siham Alami",
+            "customerTel": "+212 6 1266 9011",
+            "delivery_person_name": "Hassan Jbilou",
+            "delivery_person_tel": "+212 6 1265 5011",
+            "status": "rejected"
+        },
+        "JQEUZYPG8U": {
+            "ID": "JQEUZYPG8U",
+            "Address": "95 Boulevard Moulay Youssef, Meknès",
+            "customerName": "Youssef Jafari",
+            "customerTel": "+212 6 1263 3011",
+            "delivery_person_name": "Sara El Fassi",
+            "delivery_person_tel": "+212 6 1266 2011",
+            "status": "shipped"
+        },
+        "X9PV1XCGKL": {
+            "ID": "X9PV1XCGKL",
+            "Address": "47 Boulevard Hassan II, Agadir",
+            "customerName": "Sabrina El Kadi",
+            "customerTel": "+212 6 1264 8011",
+            "delivery_person_name": "Ali Ouadghiri",
+            "delivery_person_tel": "+212 6 1268 2011",
+            "status": "shipped"
+        },
+        "R8WUMEJI46": {
+            "ID": "R8WUMEJI46",
+            "Address": "86 Boulevard Moulay Youssef, Marrakech",
+            "customerName": "Walid Benahmed",
+            "customerTel": "+212 6 1262 8011",
+            "delivery_person_name": "Naima Belkacem",
+            "delivery_person_tel": "+212 6 1266 2011",
+            "status": "shipped"
+        },
+        "NHLT7V4M29": {
+            "ID": "NHLT7V4M29",
+            "Address": "77 Avenue Mohammed V, Marrakech",
+            "customerName": "Siham Lahlou",
+            "customerTel": "+212 6 1268 3011",
+            "delivery_person_name": "Jamal Ait Ahmed",
+            "delivery_person_tel": "+212 6 1260 6011",
+            "status": "rejected"
+        },
+        "K8OJDPAHJD": {
+            "ID": "K8OJDPAHJD",
+            "Address": "19 Rue Ibn Sina, Meknès",
+            "customerName": "Tariq Boudraa",
+            "customerTel": "+212 6 1267 4011",
+            "delivery_person_name": "Leila Bouzidi",
+            "delivery_person_tel": "+212 6 1266 3011",
+            "status": "pending"
+        },
+        "BDMDGUC0C6": {
+            "ID": "BDMDGUC0C6",
+            "Address": "8 Avenue Mohammed V, Agadir",
+            "customerName": "Zaynab Kabbaj",
+            "customerTel": "+212 6 1261 1011",
+            "delivery_person_name": "Abdelhakim Mechraoui",
+            "delivery_person_tel": "+212 6 1261 3011",
+            "status": "shipped"
+        },
+        "JQRX5XAA0H": {
+            "ID": "JQRX5XAA0H",
+            "Address": "21 Rue Ibn Sina, Rabat",
+            "customerName": "Fouad El Fassi",
+            "customerTel": "+212 6 1261 9011",
+            "delivery_person_name": "Kheira Bouhadoud",
+            "delivery_person_tel": "+212 6 1262 3011",
+            "status": "shipped"
+        },
+        "J6J7XEHIUX": {
+            "ID": "J6J7XEHIUX",
+            "Address": "3 Boulevard Hassan II, Casablanca",
+            "customerName": "Samira Boussaid",
+            "customerTel": "+212 6 1264 0011",
+            "delivery_person_name": "Zakaria Hachim",
+            "delivery_person_tel": "+212 6 1261 6011",
+            "status": "rejected"
+        },
+        "QY22FV8BGV": {
+            "ID": "QY22FV8BGV",
+            "Address": "16 Boulevard Hassan II, Agadir",
+            "customerName": "Hassan Ait Allal",
+            "customerTel": "+212 6 1261 1011",
+            "delivery_person_name": "Samir Chafai",
+            "delivery_person_tel": "+212 6 1266 2011",
+            "status": "pending"
+        },
+        "H5I8OY431Y": {
+            "ID": "H5I8OY431Y",
+            "Address": "44 Rue Abdelmoumen, Casablanca",
+            "customerName": "Imane Khalloufi",
+            "customerTel": "+212 6 1263 7011",
+            "delivery_person_name": "Salma Amraoui",
+            "delivery_person_tel": "+212 6 1260 3011",
+            "status": "rejected"
+        },
+        "3IBNXYYXX9": {
+            "ID": "3IBNXYYXX9",
+            "Address": "14 Rue Ibn Sina, Fès",
+            "customerName": "Mohammed Moussah",
+            "customerTel": "+212 6 1264 2011",
+            "delivery_person_name": "Rachid Bouzaiane",
+            "delivery_person_tel": "+212 6 1266 7011",
+            "status": "shipped"
+        },
+        "YVQ0BTJ8BI": {
+            "ID": "YVQ0BTJ8BI",
+            "Address": "50 Boulevard Moulay Youssef, Casablanca",
+            "customerName": "Fadwa El Mouden",
+            "customerTel": "+212 6 1266 1011",
+            "delivery_person_name": "Soukaina Seddiki",
+            "delivery_person_tel": "+212 6 1269 7011",
+            "status": "pending"
+        },
+        "LAMLL806L8": {
+            "ID": "LAMLL806L8",
+            "Address": "98 Avenue des FAR, Rabat",
+            "customerName": "Noureddine Boudrari",
+            "customerTel": "+212 6 1261 0011",
+            "delivery_person_name": "Omar El Hariri",
+            "delivery_person_tel": "+212 6 1265 1011",
+            "status": "rejected"
+        },
+        "74SGV67D82": {
+            "ID": "74SGV67D82",
+            "Address": "26 Avenue des FAR, Fès",
+            "customerName": "Mouad Ibrahimi",
+            "customerTel": "+212 6 1262 7011",
+            "delivery_person_name": "Khalil El Idrissi",
+            "delivery_person_tel": "+212 6 1263 7011",
+            "status": "rejected"
+        }
+    }
+}
