@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Camera, CameraView } from "expo-camera";
 import ScanInfos from "./scaninfos";
-import { fetchData } from "./services/apiService";
+import { fetchData } from "../services/apiService";
 import { useNavigation } from "expo-router";
 
 export default function ScanScreen() {
@@ -43,7 +43,7 @@ export default function ScanScreen() {
 
   const handleBarCodeScanned = ({ data }: { type: string; data: any }) => {
     const matchedItem = Object.values(apiData).find((item: any) => {
-      return item.ID === data; // Ensure the comparison returns a boolean value
+      return item.ID === data; 
     });
     if (matchedItem) {
       setScannedData(matchedItem);
@@ -54,8 +54,8 @@ export default function ScanScreen() {
   };
 
   const closeScanResult = () => {
-    setScannedData(null); // Clear data
-    setScanned(false); // Allow scanning again
+    setScannedData(null); 
+    setScanned(false);
   };
 
   const handleManualSubmit = () => {
@@ -113,16 +113,6 @@ export default function ScanScreen() {
       >
         <View style={styles.overlay}>
           <View style={styles.scanFrame} />
-          {/* {scanned && (
-            <TouchableOpacity
-              style={styles.scanAgainButton}
-              onPress={() => setScanned(false)}
-            >
-              <Text style={styles.scanAgainText}>
-                Tap to Scan Again
-              </Text>
-            </TouchableOpacity>
-          )} */}
         </View>
       </CameraView>
 
